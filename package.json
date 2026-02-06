@@ -1,0 +1,18 @@
+{
+  "name": "personal-assisstant-using-genai-agentic-pattern-type-supervisor-agent-pattern",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@langchain/langgraph": "^1.1.3",
+    "@langchain/openai": "^1.2.4",
+    "langchain": "^1.2.17",
+    "zod": "^4.3.6"
+  }
+}
