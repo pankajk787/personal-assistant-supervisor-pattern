@@ -1,5 +1,5 @@
-import { ChatOpenAi } from "@langchain/openai";
+import { ChatOpenAI } from "@langchain/openai";
 
-export const llm = new ChatOpenAi({
+export const llm = new ChatOpenAI({
     model: "gpt-4.1"
 });

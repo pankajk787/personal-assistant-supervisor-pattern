@@ -1,6 +1,6 @@
 import { createAgent } from "langchain";
-import { llm } from "../model";
-import { manageContacts, manageEmail, scheduleEvent } from "../tools";
+import { llm } from "../model.js";
+import { manageContacts, manageEmail, scheduleEvent } from "../tools.js";
 import { MemorySaver } from "@langchain/langgraph";
 
 const SUPERVISOR_PROMPT = `

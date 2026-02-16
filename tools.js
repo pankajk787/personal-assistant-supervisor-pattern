@@ -1,90 +1,10 @@
 import { tool } from "langchain";
 import { z } from "zod";
-import { calendarAgent } from "./agents/calendarAgent";
-import { emailAgent } from "./agents/emailAgent";
-import { contactAgent } from "./agents/contactAgent";
+import { calendarAgent } from "./agents/calendarAgent.js";
+import { emailAgent } from "./agents/emailAgent.js";
+import { contactAgent } from "./agents/contactAgent.js";
 
-export const createCalendarEvent = tool(
-  async ({ title, startTime, endTime, attendees, location }) => {
-    // Stub: In practice, this would call Google Calendar API, Outlook API, etc.
-    return `Event created: ${title} from ${startTime} to ${endTime} with ${attendees.length} attendees`;
-  },
-  {
-    name: "create_calendar_event",
-    description: "Create a calendar event. Requires exact ISO datetime format.",
-    schema: z.object({
-      title: z.string(),
-      startTime: z.string().describe("ISO format: '2024-01-15T14:00:00'"),
-      endTime: z.string().describe("ISO format: '2024-01-15T15:00:00'"),
-      attendees: z.array(z.string()).describe("email addresses"),
-      location: z.string().optional(),
-    }),
-  },
-);
-
-export const sendEmail = tool(
-  async ({ to, subject, body, cc }) => {
-    // Stub: In practice, this would call SendGrid, Gmail API, etc.
-    return `Email sent to ${to.join(", ")} - Subject: ${subject}`;
-  },
-  {
-    name: "send_email",
-    description:
-      "Send an email via email API. Requires properly formatted addresses.",
-    schema: z.object({
-      to: z.array(z.string()).describe("email addresses"),
-      subject: z.string(),
-      body: z.string(),
-      cc: z.array(z.string()).optional(),
-    }),
-  },
-);
-
-export const getAvailableTimeSlots = tool(
-  async ({ attendees, date, durationMinutes }) => {
-    // Stub: In practice, this would query calendar APIs
-    return ["09:00", "14:00", "16:00"];
-  },
-  {
-    name: "get_available_time_slots",
-    description:
-      "Check calendar availability for given attendees on a specific date.",
-    schema: z.object({
-      attendees: z.array(z.string()),
-      date: z.string().describe("ISO format: '2024-01-15'"),
-      durationMinutes: z.number(),
-    }),
-  },
-);
-
-export const getContacts = tool(
-  async ({ search }) => {
-    return JSON.stringify([
-      {
-        id: 1,
-        team: "design",
-        name: "Pankaj",
-        email: "pankajadi447@gmail.com",
-      },
-      {
-        id: 2,
-        team: "design",
-        name: "Shreyansh",
-        email: "shreyansh@gmail.com",
-      },
-      { id: 3, team: "development", name: "Kevin", email: "kevin47@gmail.com" },
-    ]);
-  },
-  {
-    name: "get_contacts",
-    description: "Get contact list.",
-    schema: z
-      .string()
-      .describe("search query for the contact. e.g: design or kevin"),
-  },
-);
-
-// Tools for supervisor agent using which it will communicate qith the calendarAgent, contactAgent and emailAgent
+// Tools for supervisor agent using which it will communicate with the calendarAgent, contactAgent and emailAgent
 
 export const scheduleEvent = tool(
   async ({ request }) => {

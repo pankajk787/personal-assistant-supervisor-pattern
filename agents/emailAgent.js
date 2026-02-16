@@ -1,6 +1,24 @@
-import { createAgent } from "langchain";
-import { llm } from "../model";
-import { sendEmail } from "../tools";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import { z } from "zod";
+import { llm } from "../model.js";
+
+export const sendEmail = tool(
+  async ({ to, subject, body, cc }) => {
+    // Stub: In practice, this would call SendGrid, Gmail API, etc.
+    return `Email sent to ${to.join(", ")} - Subject: ${subject}`;
+  },
+  {
+    name: "send_email",
+    description:
+      "Send an email via email API. Requires properly formatted addresses.",
+    schema: z.object({
+      to: z.array(z.string()).describe("email addresses"),
+      subject: z.string(),
+      body: z.string(),
+      cc: z.array(z.string()).optional(),
+    }),
+  },
+);
 
 const EMAIL_AGENT_PROMPT = `
 You are an email assistant.
@@ -14,6 +32,12 @@ export const emailAgent = createAgent({
   model: llm,
   tools: [sendEmail],
   systemPrompt: EMAIL_AGENT_PROMPT,
+  middleware: [ 
+    humanInTheLoopMiddleware({ 
+      interruptOn: { send_email: true }, 
+      descriptionPrefix: "Outbound email pending approval", 
+    }), 
+  ],
 });
 
 // test the agent
